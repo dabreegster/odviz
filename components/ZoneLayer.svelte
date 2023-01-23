@@ -33,7 +33,6 @@
     // TODO If we pass the ID as feature.id, it gets dropped?
     map.addSource(source, { type: "geojson", data: zonesGj, generateId: true });
 
-    // TODO Just fill-outline-color
     map.addLayer({
       id: "zones-lines",
       source,
