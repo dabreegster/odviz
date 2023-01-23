@@ -1,10 +1,16 @@
 <script>
-  export let msoas;
-  export let hoveredMsoa;
+  export let hoverZone;
+  export let clickZone;
 </script>
 
-{#if hoveredMsoa}
-  <h2>{hoveredMsoa}</h2>
+{#if hoverZone}
+  <h2>Hovering: {hoverZone}</h2>
 {:else}
-  <h2>{Object.keys(msoas).length} MSOAs</h2>
+  <p>Hover on something</p>
+{/if}
+<hr />
+{#if clickZone}
+  <h2>Selected: {clickZone}</h2>
+{:else}
+  <p>Click something</p>
 {/if}

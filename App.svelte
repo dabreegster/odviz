@@ -2,27 +2,37 @@
   import Map from "./components/Map.svelte";
   import Layout from "./components/Layout.svelte";
   import Sidebar from "./components/Sidebar.svelte";
-
+  import ZoneLayer from "./components/ZoneLayer.svelte";
   import { onMount } from "svelte";
+  import { loadZones } from "./input.js";
 
-  let data;
+  let zonesGj;
+  let zoneIdKey;
+  let hoverZone;
+  let clickZone;
 
   // When using 'npm run dev', auto-load a file for quicker development
   if (import.meta.env.DEV) {
     onMount(async () => {
-      let resp = await fetch("rutland.pb");
+      try {
+        [zonesGj, zoneIdKey] = await loadZones("small");
+      } catch (err) {
+        window.alert(`Loading failed: ${err}`);
+      }
     });
   }
 </script>
 
-{#if data}
+{#if zonesGj}
   <Layout>
     <div slot="left">
       <h1>odviz</h1>
-      <Sidebar />
+      <Sidebar {hoverZone} {clickZone} />
     </div>
     <div slot="main">
-      <Map />
+      <Map>
+        <ZoneLayer {zonesGj} {zoneIdKey} bind:hoverZone bind:clickZone />
+      </Map>
     </div>
   </Layout>
 {:else}
