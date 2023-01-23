@@ -3,11 +3,15 @@
   import Layout from "./components/Layout.svelte";
   import Sidebar from "./components/Sidebar.svelte";
   import ZoneLayer from "./components/ZoneLayer.svelte";
+  import Choropleth from "./components/Choropleth.svelte";
   import { onMount } from "svelte";
-  import { loadZones } from "./input.js";
+  import { loadZones, loadTable } from "./input.js";
 
+  // Input
   let zonesGj;
+  let table;
   let zoneIdKey;
+  // Mutable state
   let hoverZone;
   let clickZone;
 
@@ -16,6 +20,7 @@
     onMount(async () => {
       try {
         [zonesGj, zoneIdKey] = await loadZones("small");
+        table = await loadTable("small");
       } catch (err) {
         window.alert(`Loading failed: ${err}`);
       }
@@ -32,6 +37,7 @@
     <div slot="main">
       <Map>
         <ZoneLayer {zonesGj} {zoneIdKey} bind:hoverZone bind:clickZone />
+        <Choropleth {table} {hoverZone} />
       </Map>
     </div>
   </Layout>

@@ -95,6 +95,7 @@
       source,
       type: "fill",
       paint: {
+        // A neutral baseline
         "fill-color": "red",
         "fill-opacity": [
           "case",
