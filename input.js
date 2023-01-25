@@ -1,19 +1,24 @@
 // Returns GeoJSON and a lookup array from opaque numeric feature ID to the symbolic ID
 export async function loadZones(cfg) {
+  let json;
+
   if (cfg == "small") {
     let resp = await fetch("data/small/zones_core.geojson");
-    let json = await resp.json();
-
-    // Add a sequential numeric ID
-    let ids = [];
-    for (let feature of json.features) {
-      feature.id = ids.length;
-      ids.push(feature.properties["geo_code"]);
-    }
-    return [json, ids];
+    json = await resp.json();
+  } else if (cfg == "clipped") {
+    let resp = await fetch("data/clipped/zones.json");
+    json = await resp.json();
   } else {
     throw `Unknown cfg ${small}`;
   }
+
+  // Add a sequential numeric ID
+  let ids = [];
+  for (let feature of json.features) {
+    feature.id = ids.length;
+    ids.push(feature.properties["geo_code"]);
+  }
+  return [json, ids];
 }
 
 export class Table {
@@ -90,18 +95,23 @@ function csvToObjects(csvString) {
 }
 
 export async function loadTable(cfg) {
+  let contents;
   if (cfg == "small") {
     console.log(`Fetching CSV data`);
-    let resp = await fetch("data/small/clipped.csv");
-    //let resp = await fetch("data/small/wu03ew_v2.csv");
-    let contents = await resp.text();
-    console.log(`Parsing CSV`);
-    let rows = csvToObjects(contents);
-    console.log(`Converting into table`);
-    let table = new Table(rows);
-    console.log(`CSV load done`);
-    return table;
+    let resp = await fetch("data/small/wu03ew_v2.csv");
+    contents = await resp.text();
+  } else if (cfg == "clipped") {
+    console.log(`Fetching CSV data`);
+    let resp = await fetch("data/clipped/od.csv");
+    contents = await resp.text();
   } else {
     throw `Unknown cfg ${small}`;
   }
+
+  console.log(`Parsing CSV`);
+  let rows = csvToObjects(contents);
+  console.log(`Converting into table`);
+  let table = new Table(rows);
+  console.log(`CSV load done`);
+  return table;
 }

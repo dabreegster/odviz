@@ -15,3 +15,17 @@ Coerce different-looking data into one format, to deduplicate effort.
 - A/B Street's commuter patterns (hover on one zone, see a heatmap of other zones where people go)
   - Generating zones from planar graphs of the street network
 - Assign OD to the route network and style edges by volume
+
+## Notes
+
+Here's an absolute hack to clip clip a huge dataset. First use mapshaper to clip the GeoJSON. Then...
+
+`cat london.json | jq '.features[].properties.geo_code' | sort | uniq | sed 's/^"/\\(/' | sed 's/"$/\\)\\|/' > pattern`
+
+Remove newlines using vim
+
+```
+grep `cat pattern` od.csv  > clipped.csv
+```
+
+Fix the CSV headers manually

@@ -19,8 +19,9 @@
   if (import.meta.env.DEV) {
     onMount(async () => {
       try {
-        [zonesGj, idLookup] = await loadZones("small");
-        table = await loadTable("small");
+        let cfg = "clipped";
+        [zonesGj, idLookup] = await loadZones(cfg);
+        table = await loadTable(cfg);
 
         // TODO Debug
         window.table = table;
