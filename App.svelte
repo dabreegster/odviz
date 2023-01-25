@@ -21,6 +21,9 @@
       try {
         [zonesGj, idLookup] = await loadZones("small");
         table = await loadTable("small");
+
+        // TODO Debug
+        window.table = table;
       } catch (err) {
         window.alert(`Loading failed: ${err}`);
       }
@@ -37,7 +40,9 @@
     <div slot="main">
       <Map>
         <ZoneLayer {zonesGj} bind:hoverId bind:clickId />
-        <Choropleth {table} {idLookup} {hoverId} />
+        {#if table}
+          <Choropleth {table} {idLookup} {clickId} />
+        {/if}
       </Map>
     </div>
   </Layout>

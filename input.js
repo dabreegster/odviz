@@ -54,13 +54,13 @@ export class Table {
         if (!mapping[origin]) {
           mapping[origin] = [];
         }
-        mapping[origin].push((destination, parseInt(value)));
+        mapping[origin].push([destination, parseInt(value)]);
       }
     }
   }
 
   getCounts(category, origin) {
-    return this.data[category][origin];
+    return this.data[category][origin] || [];
   }
 
   getCategories() {
@@ -73,7 +73,8 @@ export class Table {
 // TODO This seems way faster than https://www.npmjs.com/package/csv-to-js-parser. What's going on?
 function csvToObjects(csvString) {
   let rows = csvString.split("\n");
-  let headers = rows.shift().split(",");
+  // Also strip quotes from multi-word headers (breaks on internal commas)
+  let headers = rows.shift().replaceAll('"', "").split(",");
 
   let result = [];
   for (let row of rows) {
@@ -90,11 +91,16 @@ function csvToObjects(csvString) {
 
 export async function loadTable(cfg) {
   if (cfg == "small") {
-    //let resp = await fetch("data/small/wu03ew_v2.csv");
+    console.log(`Fetching CSV data`);
     let resp = await fetch("data/small/clipped.csv");
+    //let resp = await fetch("data/small/wu03ew_v2.csv");
     let contents = await resp.text();
+    console.log(`Parsing CSV`);
     let rows = csvToObjects(contents);
-    return new Table(rows);
+    console.log(`Converting into table`);
+    let table = new Table(rows);
+    console.log(`CSV load done`);
+    return table;
   } else {
     throw `Unknown cfg ${small}`;
   }
