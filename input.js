@@ -1,5 +1,3 @@
-import { csvToObj } from "csv-to-js-parser";
-
 // Returns GeoJSON and the name of the ID property
 export async function loadZones(cfg) {
   if (cfg == "small") {
@@ -63,11 +61,33 @@ export class Table {
   }
 }
 
+// Parse CSV and return a dictionary per row, using the headers for names.
+// All values will be strings.
+// TODO This seems way faster than https://www.npmjs.com/package/csv-to-js-parser. What's going on?
+function csvToObjects(csvString) {
+  let rows = csvString.split("\n");
+  let headers = rows.shift().split(",");
+
+  let result = [];
+  for (let row of rows) {
+    let obj = {};
+    let i = 0;
+    for (let value of row.split(",")) {
+      obj[headers[i]] = value;
+      i++;
+    }
+    result.push(obj);
+  }
+  return result;
+}
+
 export async function loadTable(cfg) {
   if (cfg == "small") {
-    let resp = await fetch("data/small/wu03ew_v2.csv");
+    //let resp = await fetch("data/small/wu03ew_v2.csv");
+    let resp = await fetch("data/small/clipped.csv");
     let contents = await resp.text();
-    return new Table(csvToObj(contents));
+    let rows = csvToObjects(contents);
+    return new Table(rows);
   } else {
     throw `Unknown cfg ${small}`;
   }
