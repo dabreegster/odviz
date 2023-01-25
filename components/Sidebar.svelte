@@ -1,16 +1,17 @@
 <script>
-  export let hoverZone;
-  export let clickZone;
+  export let idLookup;
+  export let hoverId;
+  export let clickId;
 </script>
 
-{#if hoverZone}
-  <h2>Hovering: {hoverZone}</h2>
+{#if hoverId != null}
+  <h2>Hovering: {idLookup[hoverId]} ({hoverId})</h2>
 {:else}
   <p>Hover on something</p>
 {/if}
 <hr />
-{#if clickZone}
-  <h2>Selected: {clickZone}</h2>
+{#if clickId != null}
+  <h2>Selected: {idLookup[clickId]} ({clickId})</h2>
 {:else}
   <p>Click something</p>
 {/if}

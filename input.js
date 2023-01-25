@@ -1,9 +1,16 @@
-// Returns GeoJSON and the name of the ID property
+// Returns GeoJSON and a lookup array from opaque numeric feature ID to the symbolic ID
 export async function loadZones(cfg) {
   if (cfg == "small") {
     let resp = await fetch("data/small/zones_core.geojson");
     let json = await resp.json();
-    return [json, "geo_code"];
+
+    // Add a sequential numeric ID
+    let ids = [];
+    for (let feature of json.features) {
+      feature.id = ids.length;
+      ids.push(feature.properties["geo_code"]);
+    }
+    return [json, ids];
   } else {
     throw `Unknown cfg ${small}`;
   }

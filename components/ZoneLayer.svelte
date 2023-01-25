@@ -7,15 +7,13 @@
 
   // Input
   export let zonesGj;
-  export let zoneIdKey;
   // Output
-  export let hoverZone;
-  export let clickZone;
+  export let hoverId;
+  export let clickId;
 
   let source = "zones";
   let layer = "zones-polygons";
 
-  let hoverId;
   function unhover() {
     if (hoverId != null) {
       map.setFeatureState({ source, id: hoverId }, { hover: false });
@@ -30,8 +28,7 @@
       });
     }
 
-    // TODO If we pass the ID as feature.id, it gets dropped?
-    map.addSource(source, { type: "geojson", data: zonesGj, generateId: true });
+    map.addSource(source, { type: "geojson", data: zonesGj });
 
     map.addLayer({
       id: "zones-lines",
@@ -55,32 +52,26 @@
     map.on("mousemove", layer, (e) => {
       if (e.features.length > 0 && hoverId != e.features[0].id) {
         unhover();
-        hoverZone = e.features[0].properties[zoneIdKey];
         hoverId = e.features[0].id;
         map.setFeatureState({ source, id: hoverId }, { hover: true });
       }
     });
     map.on("mouseleave", layer, () => {
       unhover();
-      hoverZone = null;
       hoverId = null;
     });
 
-    // TODO These two IDs are getting really annoying
-    let clickedId = null;
     map.on("click", (e) => {
-      if (clickedId != null) {
-        map.setFeatureState({ source, id: clickedId }, { focused: false });
+      if (clickId != null) {
+        map.setFeatureState({ source, id: clickId }, { focused: false });
       }
 
       let features = map.queryRenderedFeatures(e.point, { layers: [layer] });
       if (features.length == 1) {
-        clickZone = features[0].properties[zoneIdKey];
-        clickedId = features[0].id;
-        map.setFeatureState({ source, id: clickedId }, { focused: true });
+        clickId = features[0].id;
+        map.setFeatureState({ source, id: clickId }, { focused: true });
       } else {
-        clickZone = null;
-        clickedId = null;
+        clickId = null;
       }
     });
   });

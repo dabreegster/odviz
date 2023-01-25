@@ -7,7 +7,8 @@
 
   // Input
   export let table;
-  export let hoverZone;
+  export let idLookup;
+  export let hoverId;
   // State
   let category = table.getCategories()[0];
   // Derived state

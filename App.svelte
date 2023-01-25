@@ -10,16 +10,16 @@
   // Input
   let zonesGj;
   let table;
-  let zoneIdKey;
+  let idLookup;
   // Mutable state
-  let hoverZone;
-  let clickZone;
+  let hoverId = null;
+  let clickId = null;
 
   // When using 'npm run dev', auto-load a file for quicker development
   if (import.meta.env.DEV) {
     onMount(async () => {
       try {
-        [zonesGj, zoneIdKey] = await loadZones("small");
+        [zonesGj, idLookup] = await loadZones("small");
         table = await loadTable("small");
       } catch (err) {
         window.alert(`Loading failed: ${err}`);
@@ -32,12 +32,12 @@
   <Layout>
     <div slot="left">
       <h1>odviz</h1>
-      <Sidebar {hoverZone} {clickZone} />
+      <Sidebar {idLookup} {hoverId} {clickId} />
     </div>
     <div slot="main">
       <Map>
-        <ZoneLayer {zonesGj} {zoneIdKey} bind:hoverZone bind:clickZone />
-        <Choropleth {table} {hoverZone} />
+        <ZoneLayer {zonesGj} bind:hoverId bind:clickId />
+        <Choropleth {table} {idLookup} {hoverId} />
       </Map>
     </div>
   </Layout>
