@@ -25,6 +25,8 @@
 
     map.on("load", () => {
       loaded = true;
+      // TODO Debug
+      window.map = map;
     });
 
     const resizeObserver = new ResizeObserver(() => {

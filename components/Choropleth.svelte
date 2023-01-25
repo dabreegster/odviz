@@ -64,8 +64,8 @@
 
         let fillColor = [
           "case",
-          ["!=", ["to-number", ["get", "count"]], 0],
-          ["step", ["get", "count"]],
+          ["!=", ["to-number", ["feature-state", "count"]], 0],
+          ["step", ["feature-state", "count"]],
           "rgba(0, 0, 0, 0)",
         ];
         for (let i = 1; i < limits.length; i++) {
