@@ -7,15 +7,20 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "fmt": "npx prettier --write *.html *.js *.svelte components/*",
-    "lint": "npx eslint . --ignore-pattern=vite.config.js"
+    "fmt": "npx prettier --write *.html *.js *.ts *.svelte components/*",
+    "lint": "npx eslint . --ignore-pattern=vite.config.js",
+    "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.0.0",
+    "@tsconfig/svelte": "^3.0.0",
     "eslint": "^8.31.0",
     "eslint-plugin-svelte": "^2.14.1",
     "prettier": "^2.8.2",
     "prettier-plugin-svelte": "^2.9.0",
+    "svelte-check": "^2.10.0",
+    "tslib": "^2.4.1",
+    "typescript": "^4.9.3",
     "vite": "^4.0.0"
   },
   "dependencies": {
