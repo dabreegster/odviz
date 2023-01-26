@@ -5,7 +5,7 @@
   import ZoneLayer from "./components/ZoneLayer.svelte";
   import Choropleth from "./components/Choropleth.svelte";
   import { onMount } from "svelte";
-  import { loadZones, loadTable } from "./input.js";
+  import { loadZones, loadTable } from "./input.ts";
 
   // Input
   let zonesGj;

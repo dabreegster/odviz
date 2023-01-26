@@ -1,15 +1,22 @@
-// Returns GeoJSON and a lookup array from opaque numeric feature ID to the symbolic ID
-export async function loadZones(cfg) {
-  let json;
+import type { FeatureCollection } from "geojson";
 
-  if (cfg == "small") {
+enum Config {
+  Small,
+  Clipped,
+}
+
+// Returns GeoJSON and a lookup array from opaque numeric feature ID to the symbolic ID
+export async function loadZones(cfg: Config) {
+  let json: FeatureCollection;
+
+  if (cfg == Config.Small) {
     let resp = await fetch("data/small/zones_core.geojson");
     json = await resp.json();
-  } else if (cfg == "clipped") {
+  } else if (cfg == Config.Clipped) {
     let resp = await fetch("data/clipped/zones.json");
     json = await resp.json();
   } else {
-    throw `Unknown cfg ${small}`;
+    throw `Unknown cfg ${cfg}`;
   }
 
   // Add a sequential numeric ID
@@ -76,7 +83,7 @@ export class Table {
 // Parse CSV and return a dictionary per row, using the headers for names.
 // All values will be strings.
 // TODO This seems way faster than https://www.npmjs.com/package/csv-to-js-parser. What's going on?
-function csvToObjects(csvString) {
+function csvToObjects(csvString: string) {
   let rows = csvString.split("\n");
   // Also strip quotes from multi-word headers (breaks on internal commas)
   let headers = rows.shift().replaceAll('"', "").split(",");
@@ -94,18 +101,18 @@ function csvToObjects(csvString) {
   return result;
 }
 
-export async function loadTable(cfg) {
+export async function loadTable(cfg: Config) {
   let contents;
-  if (cfg == "small") {
+  if (cfg == Config.Small) {
     console.log(`Fetching CSV data`);
     let resp = await fetch("data/small/wu03ew_v2.csv");
     contents = await resp.text();
-  } else if (cfg == "clipped") {
+  } else if (cfg == Config.Clipped) {
     console.log(`Fetching CSV data`);
     let resp = await fetch("data/clipped/od.csv");
     contents = await resp.text();
   } else {
-    throw `Unknown cfg ${small}`;
+    throw `Unknown cfg ${cfg}`;
   }
 
   console.log(`Parsing CSV`);

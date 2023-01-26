@@ -14,6 +14,7 @@
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.0.0",
     "@tsconfig/svelte": "^3.0.0",
+    "@types/chroma-js": "^2.1.4",
     "eslint": "^8.31.0",
     "eslint-plugin-svelte": "^2.14.1",
     "prettier": "^2.8.2",
@@ -25,6 +26,7 @@
   },
   "dependencies": {
     "@turf/bbox": "^6.5.0",
+    "@types/geojson": "^7946.0.10",
     "chroma-js": "^2.4.2",
     "maplibre-gl": "^2.4.0",
     "svelte": "^3.54.0"
